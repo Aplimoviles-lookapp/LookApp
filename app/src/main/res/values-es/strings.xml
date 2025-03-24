@@ -7,4 +7,10 @@
     <string name="nvb_saved">Guardados</string>
     <string name="nvb_notifications">Norificaciones</string>
     <string name="title_saved">Guardados</string>
+    <string name="profile_greeting">"!Hola, "</string>
+    <string name="manage_account">Administra tu cuenta</string>
+    <string name="acc_sec_your_account">Tus Cuentas</string>
+    <string name="accounts_add_another_account">Añadir otra cuenta</string>
+    <string name="accounts_loggout_all">Cerrar todas las cuentas</string>
+    <string name="title_user_data">Datos del usuario</string>
 </resources>
