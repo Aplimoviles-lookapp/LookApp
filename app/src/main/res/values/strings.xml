@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LookApp</string>
+    <string name="home">Home</string>
+    <string name="nvb_search">Search</string>
+    <string name="nvb_home">Home</string>
+    <string name="nvb_saved">Saved</string>
+    <string name="nvb_notifications">Notifications</string>
+    <string name="title_saved">Saved</string>
 </resources>

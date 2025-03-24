@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LookApp</string>
+    <string name="home">Principal</string>
+    <string name="nvb_search">Buscar</string>
+    <string name="nvb_home">Principal</string>
+    <string name="nvb_saved">Guardados</string>
+    <string name="nvb_notifications">Norificaciones</string>
+    <string name="title_saved">Guardados</string>
+</resources>
