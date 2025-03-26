@@ -1,6 +1,5 @@
 package edu.unicauca.lookapp.ui.screen.saved
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
