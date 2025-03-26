@@ -75,7 +75,7 @@ fun AccountsSection(
                     )
                 },
                 modifier = Modifier.width(320.dp),
-                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 7.dp),
+                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 5.dp),
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
 
 
@@ -99,7 +99,7 @@ fun AccountsSection(
                     )
                 },
                 modifier = Modifier.width(320.dp),
-                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 7.dp),
+                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 5.dp),
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
 
                 )

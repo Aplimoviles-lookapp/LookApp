@@ -79,7 +79,7 @@ fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onMa
             modifier = Modifier.padding(top = 8.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = onManageClick,
@@ -102,7 +102,7 @@ fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onMa
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(2.dp),
             )
-            Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = stringResource(R.string.manage_account),
                 style = MaterialTheme.typography.labelLarge,
