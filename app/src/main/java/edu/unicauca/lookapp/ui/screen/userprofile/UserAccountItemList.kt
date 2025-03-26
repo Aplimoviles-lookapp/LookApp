@@ -2,6 +2,7 @@ package edu.unicauca.lookapp.ui.screen.userprofile
 
 import android.accounts.Account
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,14 +15,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun UserAccountItemList(list:List<UserAccount>,onClickedAccount: (UserAccount)->Unit, modifier: Modifier =Modifier){
-    LazyColumn(
-        modifier=modifier,
+    Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        items(
-            items = list
-        ){
-            account->
+        list.forEach { account ->
             UserAccountItem(
                 name = account.name,
                 email = account.email,
