@@ -55,7 +55,7 @@ fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onMa
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 10.dp,
+                    defaultElevation = 6.dp,
                 )
             ) {
                 Icon(
