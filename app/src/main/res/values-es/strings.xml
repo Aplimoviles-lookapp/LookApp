@@ -13,4 +13,5 @@
     <string name="accounts_add_another_account">Añadir otra cuenta</string>
     <string name="accounts_loggout_all">Cerrar todas las cuentas</string>
     <string name="title_user_data">Datos del usuario</string>
+    <string name="title_Home">Principal</string>
 </resources>

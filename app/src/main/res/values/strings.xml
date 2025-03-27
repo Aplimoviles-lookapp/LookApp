@@ -12,4 +12,5 @@
     <string name="accounts_add_another_account">Add another account</string>
     <string name="accounts_loggout_all">Loggout all accounts</string>
     <string name="title_user_data">User information</string>
+    <string name="title_Home">Home</string>
 </resources>
