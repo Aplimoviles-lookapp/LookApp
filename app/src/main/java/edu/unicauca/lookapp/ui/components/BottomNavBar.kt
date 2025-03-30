@@ -12,74 +12,36 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import edu.unicauca.lookapp.R
 
+data class BottomNavItem(val route: String, val icon: ImageVector, val label: Int)
+
 @Composable
-fun BottomNavBar(modifier: Modifier= Modifier) {
+fun BottomNavBar(modifier: Modifier= Modifier, currentRoute: String = "home", onNavigate: (String) -> Unit = {}) {
+    val items = listOf(
+        BottomNavItem("home", Icons.Filled.Home, R.string.nvb_home),
+        BottomNavItem("search", Icons.Filled.Search, R.string.nvb_search),
+        BottomNavItem("saved", Icons.Filled.CollectionsBookmark, R.string.nvb_saved),
+        BottomNavItem("notifications", Icons.Filled.Notifications, R.string.nvb_notifications)
+    )
+
     NavigationBar (
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         modifier = modifier
     ){
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Filled.Home,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.nvb_home))
-            },
-            selected = true,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.nvb_search))
-            },
-            selected = false,
-            onClick = {}
-        )
+        items.forEach { item ->
+            NavigationBarItem(
+                icon = { Icon(item.icon, contentDescription = null) },
+                label = { Text(stringResource(item.label)) },
+                selected = currentRoute == item.route,
+                onClick = { onNavigate(item.route) },
 
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Filled.CollectionsBookmark,
-                    //imageVector = Icons.Outlined.Favorite,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.nvb_saved))
-            },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Filled.Notifications,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.nvb_notifications))
-            },
-            selected = false,
-            onClick = {}
-        )
+            )
+        }
 
     }
 }
