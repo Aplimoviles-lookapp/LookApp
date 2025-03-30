@@ -15,18 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import edu.unicauca.lookapp.R
+import edu.unicauca.lookapp.ui.navigation.RouteEnum
 
 data class BottomNavItem(val route: String, val icon: ImageVector, val label: Int)
 
 @Composable
-fun BottomNavBar(modifier: Modifier= Modifier, currentRoute: String = "home", onNavigate: (String) -> Unit = {}) {
+fun BottomNavBar(modifier: Modifier= Modifier, currentRoute: String = RouteEnum.Home.route, onNavigate: (String) -> Unit = {}) {
     val items = listOf(
-        BottomNavItem("home", Icons.Filled.Home, R.string.nvb_home),
-        BottomNavItem("search", Icons.Filled.Search, R.string.nvb_search),
-        BottomNavItem("saved", Icons.Filled.CollectionsBookmark, R.string.nvb_saved),
-        BottomNavItem("notifications", Icons.Filled.Notifications, R.string.nvb_notifications)
+        BottomNavItem(RouteEnum.Home.route, Icons.Filled.Home, R.string.nvb_home),
+        BottomNavItem(RouteEnum.Search.route, Icons.Filled.Search, R.string.nvb_search),
+        BottomNavItem(RouteEnum.Saved.route, Icons.Filled.CollectionsBookmark, R.string.nvb_saved),
+        BottomNavItem(RouteEnum.Notifications.route, Icons.Filled.Notifications, R.string.nvb_notifications)
     )
 
     NavigationBar (
