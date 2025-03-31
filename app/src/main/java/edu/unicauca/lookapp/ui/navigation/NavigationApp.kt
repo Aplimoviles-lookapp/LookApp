@@ -40,6 +40,7 @@ fun NavigationApp(modifier: Modifier = Modifier) {
     ModalNavigationDrawer(
         drawerContent = { ModalDrawerContent() },
         drawerState = drawerState,
+        gesturesEnabled = currentRoute != RouteEnum.Search.route,
     ) {
         Scaffold(
             topBar = {
