@@ -19,7 +19,9 @@ import edu.unicauca.lookapp.ui.components.ModalDrawerContent
 import edu.unicauca.lookapp.ui.components.TopAppBar
 import edu.unicauca.lookapp.ui.screen.dummy.DummyScreen
 import edu.unicauca.lookapp.ui.screen.home.Home
+import edu.unicauca.lookapp.ui.screen.notifications.NotificationScreen
 import edu.unicauca.lookapp.ui.screen.saved.SavedScreen
+import edu.unicauca.lookapp.ui.screen.search.SearchScreen
 import edu.unicauca.lookapp.ui.screen.userprofile.UserProfileScreen
 import kotlinx.coroutines.launch
 
@@ -81,11 +83,11 @@ fun NavigationApp(modifier: Modifier = Modifier) {
                     UserProfileScreen()
                 }
                 composable(route = RouteEnum.Notifications.route) {
-                    DummyScreen(title = R.string.title_notifications)
+                    NotificationScreen()
                 }
 
                 composable(route = RouteEnum.Search.route) {
-                    DummyScreen(title = R.string.title_Search)
+                    SearchScreen()
                 }
 
             }
