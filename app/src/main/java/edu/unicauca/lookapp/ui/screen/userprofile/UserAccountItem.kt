@@ -27,8 +27,8 @@ fun UserAccountItem(modifier: Modifier = Modifier, name: String, email: String, 
     Row(
         modifier = modifier
             .width(320.dp)
+            //.padding(8.dp)
             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
-            .padding(8.dp)
             .clickable{
 
             }
@@ -51,7 +51,7 @@ fun UserAccountItem(modifier: Modifier = Modifier, name: String, email: String, 
 
         }
         Spacer(modifier = Modifier.width(8.dp))
-        Column {
+        Column(modifier=Modifier.padding(8.dp)) {
             Text(
                 text = name,
                 style = MaterialTheme.typography.titleMedium,

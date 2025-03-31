@@ -21,7 +21,12 @@ import edu.unicauca.lookapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(@StringRes title: Int, modifier: Modifier= Modifier) {
+fun TopAppBar(
+    @StringRes title: Int,
+    modifier: Modifier = Modifier,
+    onClickNavIcon: () -> Unit = {},
+    onClickActionButton: () -> Unit ={}
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     CenterAlignedTopAppBar(
@@ -37,7 +42,7 @@ fun TopAppBar(@StringRes title: Int, modifier: Modifier= Modifier) {
             )
         },
         navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = onClickNavIcon) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Localized description"
@@ -45,7 +50,7 @@ fun TopAppBar(@StringRes title: Int, modifier: Modifier= Modifier) {
             }
         },
         actions = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = onClickActionButton) {
                 Icon(
                     imageVector = Icons.Filled.AccountCircle,
                     contentDescription = "Localized description"
@@ -61,5 +66,5 @@ fun TopAppBar(@StringRes title: Int, modifier: Modifier= Modifier) {
 @Preview(showBackground = true, locale = "es")
 @Composable
 fun TopAppBarPreview() {
-    TopAppBar(title = R.string.title_saved, modifier = Modifier)
+    TopAppBar(title = R.string.title_saved, modifier = Modifier,)
 }

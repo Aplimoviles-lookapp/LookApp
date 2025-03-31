@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 fun UserAccountItemList(list:List<UserAccount>,onClickedAccount: (UserAccount)->Unit, modifier: Modifier =Modifier){
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         list.forEach { account ->
             UserAccountItem(

@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
@@ -84,7 +85,7 @@ fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onMa
             border = ButtonDefaults.outlinedButtonBorder,
             modifier = Modifier
                 .width(220.dp)
-                .height(48.dp)
+                //.height(48.dp)
                 .padding(horizontal = 0.dp)
 
         ) {
@@ -99,7 +100,8 @@ fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onMa
                 text = stringResource(R.string.manage_account),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Start
             )
         }
 

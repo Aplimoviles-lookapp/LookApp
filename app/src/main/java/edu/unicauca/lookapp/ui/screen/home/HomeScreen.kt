@@ -18,7 +18,7 @@ fun Home(
     modifier: Modifier=Modifier
 ){
     Column{
-        TopAppBar(title = R.string.title_Home)
+        //TopAppBar(title = "Home")
         NavigationBarMenuMain()
         Spacer(modifier = Modifier.height(8.dp))
         Form()

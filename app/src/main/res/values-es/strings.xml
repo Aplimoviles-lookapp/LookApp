@@ -14,4 +14,16 @@
     <string name="accounts_loggout_all">Cerrar todas las cuentas</string>
     <string name="title_user_data">Datos del usuario</string>
     <string name="title_Home">Principal</string>
+    <string name="lookapp">LookApp</string>
+    <string name="lateral_txt_home">Inicio</string>
+    <string name="lateral_txt_search">Buscar</string>
+    <string name="lateral_txt_reservations">Reservas</string>
+    <string name="lateral_txt_stylist">Estilista</string>
+    <string name="lateral_txt_discounts">Promociones</string>
+    <string name="lateral_txt_saved">Guardados</string>
+    <string name="lateral_txt_profile">Perfil</string>
+    <string name="lateral_txt_settings">Configuraciones</string>
+    <string name="lateral_txt_help_and_feedback">Ayuda y comentarios</string>
+    <string name="title_Search">Buscar</string>
+    <string name="title_notifications">Notificaciones</string>
 </resources>
