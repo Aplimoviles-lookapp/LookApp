@@ -50,11 +50,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.type.TimeZone
+//import com.google.type.TimeZone
 
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
-
 
 
 
@@ -244,7 +244,7 @@ fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
         onValueChange = { },
         label = { Text("Fecha") },
-        placeholder = { Text("MM/DD/YYYY") },
+        placeholder = { Text("DD/MM/YYYY") },
         trailingIcon = {
             Icon(Icons.Default.DateRange, contentDescription = "Select date")
         },
@@ -275,7 +275,9 @@ fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
 
 
 fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
     return formatter.format(Date(millis))
 }
 

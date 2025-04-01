@@ -18,8 +18,8 @@ fun Home(
     modifier: Modifier=Modifier
 ){
     Column{
-        //TopAppBar(title = "Home")
-        NavigationBarMenuMain()
+
+        TabBar()
         Spacer(modifier = Modifier.height(8.dp))
         Form()
     }
@@ -37,7 +37,8 @@ fun HomePreview(){
 @Composable
 fun HomeScreenPreview(){
     Scaffold (
-       // topBar = { TopAppBar(title = R.string.title_Home)},
+        
+      topBar = { TopAppBar(title = R.string.title_Home)},
         bottomBar = { BottomNavBar() }
 
     ){ padding ->
