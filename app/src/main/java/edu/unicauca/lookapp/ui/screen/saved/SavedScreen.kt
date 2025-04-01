@@ -30,7 +30,7 @@ fun SavedScreen(modifier: Modifier = Modifier) {
 @Composable
 fun SavedScreenPreview() {
     Scaffold(
-        topBar = { TopAppBar(title = R.string.title_saved) },
+        topBar = { TopAppBar(title = R.string.title_saved,) },
         bottomBar = { BottomNavBar()}
     ) { padding ->
         SavedScreen(Modifier.padding(padding))

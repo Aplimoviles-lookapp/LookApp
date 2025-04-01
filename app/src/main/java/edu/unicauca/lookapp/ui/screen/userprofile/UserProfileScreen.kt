@@ -44,7 +44,7 @@ fun UserProfileScreen(modifier: Modifier = Modifier) {
 @Composable
 fun UserProfileScreenPreview() {
     Scaffold(
-        topBar = { TopAppBar(title = R.string.title_user_data) },
+        topBar = { TopAppBar(title = R.string.title_user_data,) },
         bottomBar = { BottomNavBar() }
     ) { padding ->
         UserProfileScreen(Modifier.padding(padding))
