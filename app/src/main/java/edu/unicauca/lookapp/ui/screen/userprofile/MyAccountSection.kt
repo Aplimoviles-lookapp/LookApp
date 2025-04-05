@@ -16,20 +16,28 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImagePainter
+import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.SubcomposeAsyncImageContent
 import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
 import edu.unicauca.lookapp.R
 
 @Composable
@@ -40,13 +48,34 @@ fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onMa
     ) {
 
         Box(modifier = Modifier.padding(16.dp)) {
-            Image(
-                painter = rememberAsyncImagePainter("https://picsum.photos/200"),
+            SubcomposeAsyncImage(
+                model = "https://picsum.photos/200",
+                contentDescription =null,
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+            ) {
+                val state by painter.state.collectAsState()
+                if (state is AsyncImagePainter.State.Success) {
+                    SubcomposeAsyncImageContent()
+                } else {
+                    CircularProgressIndicator()
+                }
+            }
+            /*Image(
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("https://picsum.photos/200")
+                        .placeholder(R.drawable.ic_loading)
+                        .error(R.drawable.ic_no_internet)
+                        .fallback(R.drawable.ic_image_fallback)
+                        .build()
+                    ),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
-            )
+            )*/
 
             FloatingActionButton(
                 onClick = onEdit,
