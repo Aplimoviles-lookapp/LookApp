@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.unicauca.lookapp.features.saved.data.entities.ItemEntity
-import edu.unicauca.lookapp.features.saved.data.repositories.SavedRepository
+import edu.unicauca.lookapp.features.saved.domain.usecases.DeleteSavedItemUseCase
 import edu.unicauca.lookapp.features.saved.domain.usecases.GetSavedItemsUseCase
 import edu.unicauca.lookapp.features.saved.domain.usecases.InsertSavedItemUseCase
-import edu.unicauca.lookapp.features.saved.domain.usecases.LoadInitialDataUseCase
+import edu.unicauca.lookapp.features.saved.domain.usecases.LoadInitialSavedItemsUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,8 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SavedViewModel @Inject constructor (
     private val insertSavedItemUseCase: InsertSavedItemUseCase,
-    private val loadInitialDataUseCase: LoadInitialDataUseCase,
-    private val getSavedItemsUseCase: GetSavedItemsUseCase
+    private val loadInitialDataUseCase: LoadInitialSavedItemsUseCase,
+    private val getSavedItemsUseCase: GetSavedItemsUseCase,
+    private val deleteSavedItemUseCase: DeleteSavedItemUseCase
 ): ViewModel() {
 
     fun insertItem(item: ItemEntity) {
@@ -24,11 +25,18 @@ class SavedViewModel @Inject constructor (
             insertSavedItemUseCase(item)
         }
     }
-    fun loadInitialData() {
+
+    /*fun loadInitialData() {
         viewModelScope.launch {
             loadInitialDataUseCase()
         }
-    }
+    }*/
     fun getSavedItems() = getSavedItemsUseCase()
+
+    fun deleteItem(id: Long) {
+        viewModelScope.launch {
+            deleteSavedItemUseCase(id)
+        }
+    }
 
 }
