@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 class UserAccount(
+    var id: Long = 0L,
     val name: String,
     val email: String,
-    isCurrentUser: Boolean = false
+    val onClick : ((Long)->Unit) -> Unit = {},
 ) {
-    var current by mutableStateOf(isCurrentUser)
 }

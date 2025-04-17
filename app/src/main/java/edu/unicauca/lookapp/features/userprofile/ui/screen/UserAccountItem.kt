@@ -23,14 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun UserAccountItem(modifier: Modifier = Modifier, name: String, email: String, onClick: (UserAccount)->Unit={}) {
+fun UserAccountItem(modifier: Modifier = Modifier, name: String, email: String, onClick: ()->Unit={}) {
     Row(
         modifier = modifier
             .width(320.dp)
             //.padding(8.dp)
             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
             .clickable{
-
+                onClick()
             }
         ,
         verticalAlignment = Alignment.CenterVertically

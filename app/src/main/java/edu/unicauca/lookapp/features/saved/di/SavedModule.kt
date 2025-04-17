@@ -6,7 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import edu.unicauca.lookapp.features.saved.data.dao.SavedDao
 import edu.unicauca.lookapp.features.saved.data.datasource.RoomSavedLocalDataSourceImpl
-import edu.unicauca.lookapp.features.saved.data.datasource.SavedLocalDataSource
+import edu.unicauca.lookapp.features.saved.data.datasource.SavedDataSource
 
 
 @Module
@@ -16,7 +16,7 @@ class SavedModule {
     @Provides
     fun provideSavedLocalDataSource(
         savedDao: SavedDao
-    ): SavedLocalDataSource {
+    ): SavedDataSource {
         return RoomSavedLocalDataSourceImpl(savedDao)
     }
 }

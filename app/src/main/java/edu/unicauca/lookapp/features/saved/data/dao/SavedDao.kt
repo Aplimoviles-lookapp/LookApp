@@ -26,4 +26,13 @@ interface SavedDao {
 
     @Query("SELECT * FROM items")
     fun getAll(): Flow<List<ItemEntity>>
+
+    @Query("""
+        SELECT items.*
+        FROM items AS items
+        INNER JOIN user_accounts_items_cross_ref AS cross_ref
+        ON items.itemId = cross_ref.itemId
+        WHERE cross_ref.userAccountId = :userAccountId
+    """)
+    fun getItemsByUserAccountId(userAccountId: Long): Flow<List<ItemEntity>>
 }

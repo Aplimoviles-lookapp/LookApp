@@ -31,7 +31,7 @@ class SavedViewModel @Inject constructor (
             loadInitialDataUseCase()
         }
     }*/
-    fun getSavedItems() = getSavedItemsUseCase()
+    fun getSavedItems(id: Long) = getSavedItemsUseCase(id)
 
     fun deleteItem(id: Long) {
         viewModelScope.launch {

@@ -37,7 +37,7 @@ import coil3.compose.SubcomposeAsyncImageContent
 import edu.unicauca.lookapp.R
 
 @Composable
-fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onManageClick: ()->Unit={} ,userName: String = "Anonymous") {
+fun MyAccountSection(modifier: Modifier = Modifier, onEdit: () -> Unit = {},onManageClick: ()->Unit={} ,userName: String) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally

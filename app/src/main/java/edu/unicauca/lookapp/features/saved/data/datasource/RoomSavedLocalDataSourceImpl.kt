@@ -4,10 +4,12 @@ import edu.unicauca.lookapp.features.saved.data.dao.SavedDao
 import edu.unicauca.lookapp.features.saved.data.entities.ItemEntity
 import kotlinx.coroutines.flow.Flow
 
-class RoomSavedLocalDataSourceImpl (private val savedDao: SavedDao): SavedLocalDataSource {
+class RoomSavedLocalDataSourceImpl (private val savedDao: SavedDao): SavedDataSource {
     override suspend fun insertItem(item: ItemEntity) {
         savedDao.insertItem(item)
     }
+
+
 
     override suspend fun deleteItem(id: Long) {
         savedDao.deleteItem(id)
@@ -23,5 +25,9 @@ class RoomSavedLocalDataSourceImpl (private val savedDao: SavedDao): SavedLocalD
 
     override fun getAll(): Flow<List<ItemEntity>> {
         return savedDao.getAll()
+    }
+
+    override fun getItemsByUserAccountId(userAccountId: Long): Flow<List<ItemEntity>> {
+        return savedDao.getItemsByUserAccountId(userAccountId)
     }
 }

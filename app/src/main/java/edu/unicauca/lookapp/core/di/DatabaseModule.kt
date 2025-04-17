@@ -19,6 +19,7 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): LookAppDatabase {
         return Room.databaseBuilder(context, LookAppDatabase::class.java, "lookapp_database.db")
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 
@@ -26,4 +27,7 @@ object DatabaseModule {
 
     @Provides
     fun provideSavedDao(database: LookAppDatabase) = database.savedDao()
+
+    @Provides
+    fun provideUserAccountDao(database: LookAppDatabase) = database.userAccountDao()
 }
