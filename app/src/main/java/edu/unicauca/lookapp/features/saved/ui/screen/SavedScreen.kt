@@ -23,32 +23,19 @@ fun SavedScreen(modifier: Modifier = Modifier, savedViewModel: SavedViewModel = 
     val savedItems = savedViewModel.getSavedItems().collectAsState(
         initial = emptyList()
     )
-    LaunchedEffect(Unit) {
-        savedViewModel.loadInitialData()
-    }
+
     LazyColumn(modifier = modifier.padding(8.dp)) {
         items(savedItems.value) { item ->
             SavedItem(
                 title = item.title,
                 subtitle = item.subtitle,
                 imageUrl = item.imageUrl,
-                onDelete = { /*savedViewModel.deleteItem(item)*/ },
+                onDelete = { savedViewModel.deleteItem(item.itemId) },
                 modifier = Modifier
             )
         }
     }
-    /*LazyColumn(modifier = modifier.padding(8.dp)) {
 
-        items(10) {
-            SavedItem(
-                title = "Caroy Peluqueria",
-                subtitle = "Corte de cabello",
-                imageUrl = "https://picsum.photos/201",
-                onDelete = {},
-                modifier = Modifier
-            )
-        }
-    }*/
 }
 
 @Preview(showBackground = true, locale = "es")

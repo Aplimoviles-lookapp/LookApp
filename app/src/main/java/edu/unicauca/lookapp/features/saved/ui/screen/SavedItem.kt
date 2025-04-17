@@ -104,7 +104,7 @@ fun SavedItem(
             )*/
 
             SubcomposeAsyncImage(
-                model = "https://picsum.photos/200",
+                model = imageUrl,
                 contentDescription =null,
                 modifier = Modifier
                     .fillMaxSize(),

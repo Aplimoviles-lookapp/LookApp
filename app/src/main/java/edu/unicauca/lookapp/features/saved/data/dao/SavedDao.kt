@@ -18,8 +18,8 @@ interface SavedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(items: List<ItemEntity>)
 
-    @Delete
-    suspend fun deleteItem(item: ItemEntity)
+    @Query("DELETE FROM items WHERE itemId = :id")
+    suspend fun deleteItem(id: Long)
 
     @Query("SELECT COUNT(*) FROM items")
     suspend fun count(): Int
