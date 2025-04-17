@@ -29,7 +29,7 @@ import edu.unicauca.lookapp.R
 fun AccountsSection(
     accounts: List<UserAccount>,
     modifier: Modifier = Modifier,
-    onClickedAccount: (UserAccount) -> Unit = {},
+    onClickedAccount: (UserAccount?) -> Unit = {},
     onClickedAddAccount: () -> Unit = {},
     onClickedLoggoutAll: () -> Unit = {},
 ) {
@@ -109,9 +109,9 @@ fun AccountsSection(
 fun AccountsSectionPreview() {
     AccountsSection(
         accounts = listOf(
-            UserAccount("Juan", "Juan@gmail.com"),
-            UserAccount("Naren", "Naren@gmail.com"),
-            UserAccount("Freider", "Freider@gmail.com"),
+            UserAccount(0,"Juan", "Juan@gmail.com"),
+            UserAccount(0,"Naren", "Naren@gmail.com"),
+            UserAccount(0,"Freider", "Freider@gmail.com"),
         ),
     )
 }

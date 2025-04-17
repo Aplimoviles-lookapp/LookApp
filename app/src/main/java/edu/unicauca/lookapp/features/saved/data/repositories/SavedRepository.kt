@@ -1,24 +1,27 @@
 package edu.unicauca.lookapp.features.saved.data.repositories
 
-import edu.unicauca.lookapp.features.saved.data.datasource.SavedLocalDataSource
+import edu.unicauca.lookapp.features.saved.data.datasource.SavedDataSource
 import edu.unicauca.lookapp.features.saved.data.entities.ItemEntity
 import edu.unicauca.lookapp.features.saved.data.prepopulate.InitialSavedDataProvider
 import javax.inject.Inject
 
-class SavedRepository @Inject constructor(private val savedLocalDataSource: SavedLocalDataSource) {
+class SavedRepository @Inject constructor(private val savedDataSource: SavedDataSource) {
 
     suspend fun insertItem(item: ItemEntity) {
-        savedLocalDataSource.insertItem(item)
+        savedDataSource.insertItem(item)
     }
 
     suspend fun deleteItem(id: Long) {
-        savedLocalDataSource.deleteItem(id)
+        savedDataSource.deleteItem(id)
     }
 
     suspend fun loadInitialData(){
-        if(savedLocalDataSource.count() > 0) return
-        savedLocalDataSource.insertAll(InitialSavedDataProvider.getItems())
+        if(savedDataSource.count() > 0) return
+        savedDataSource.insertAll(InitialSavedDataProvider.getSavedItems())
     }
 
-    fun getAll()= savedLocalDataSource.getAll()
+    fun getAll()= savedDataSource.getAll()
+
+    fun getItemsByUserAccountId(userAccountId: Long) =
+        savedDataSource.getItemsByUserAccountId(userAccountId)
 }

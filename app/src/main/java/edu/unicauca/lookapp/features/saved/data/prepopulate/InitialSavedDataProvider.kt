@@ -3,7 +3,8 @@ package edu.unicauca.lookapp.features.saved.data.prepopulate
 import edu.unicauca.lookapp.features.saved.data.entities.ItemEntity
 
 object InitialSavedDataProvider {
-    fun getItems(): List<ItemEntity> = listOf(
+
+    val items: List<ItemEntity> = listOf(
         ItemEntity(
             title = "Caroy Peluqueria",
             subtitle = "Corte de pelo",
@@ -24,6 +25,6 @@ object InitialSavedDataProvider {
             subtitle = "Corte de pelo",
             imageUrl = "https://picsum.photos/201",
         ),
-
     )
+    fun getSavedItems(): List<ItemEntity> = items
 }

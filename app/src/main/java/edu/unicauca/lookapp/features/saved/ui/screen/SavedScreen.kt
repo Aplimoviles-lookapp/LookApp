@@ -14,25 +14,37 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import edu.unicauca.lookapp.R
 import edu.unicauca.lookapp.core.ui.components.BottomNavBar
 import edu.unicauca.lookapp.core.ui.components.TopAppBar
+import edu.unicauca.lookapp.core.ui.viewmodel.MainViewModel
 import edu.unicauca.lookapp.features.saved.data.entities.ItemEntity
 import edu.unicauca.lookapp.features.saved.ui.viewmodel.SavedViewModel
+import edu.unicauca.lookapp.features.userprofile.ui.viewmodel.UserProfileViewModel
 import kotlinx.coroutines.flow.asFlow
 
 @Composable
-fun SavedScreen(modifier: Modifier = Modifier, savedViewModel: SavedViewModel = hiltViewModel()) {
-    val savedItems = savedViewModel.getSavedItems().collectAsState(
-        initial = emptyList()
-    )
+fun SavedScreen(
+    modifier: Modifier = Modifier,
+    savedViewModel: SavedViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel(),
+) {
+    val currentUser = mainViewModel.uiState.collectAsState().value.currentUserAccount
+    val savedItems = currentUser?.let {
+        savedViewModel.getSavedItems(it.id).collectAsState(
+            initial = emptyList()
+        )
+    }
+
 
     LazyColumn(modifier = modifier.padding(8.dp)) {
-        items(savedItems.value) { item ->
-            SavedItem(
-                title = item.title,
-                subtitle = item.subtitle,
-                imageUrl = item.imageUrl,
-                onDelete = { savedViewModel.deleteItem(item.itemId) },
-                modifier = Modifier
-            )
+        if (savedItems != null) {
+            items(savedItems.value) { item ->
+                SavedItem(
+                    title = item.title,
+                    subtitle = item.subtitle,
+                    imageUrl = item.imageUrl,
+                    onDelete = { savedViewModel.deleteItem(item.itemId) },
+                    modifier = Modifier
+                )
+            }
         }
     }
 
@@ -42,7 +54,7 @@ fun SavedScreen(modifier: Modifier = Modifier, savedViewModel: SavedViewModel = 
 @Composable
 fun SavedScreenPreview() {
     Scaffold(
-        topBar = { TopAppBar(title = R.string.title_saved,) },
+        topBar = { TopAppBar(title = R.string.title_saved) },
         bottomBar = { BottomNavBar() }
     ) { padding ->
         SavedScreen(Modifier.padding(padding))

@@ -41,6 +41,12 @@ fun NavigationApp(modifier: Modifier = Modifier, mainViewModel: MainViewModel = 
     val currentRoute = navBackStackEntry?.destination?.route
     val titleRes = RouteEnum.fromRoute(currentRoute ?: RouteEnum.Home.route)
 
+    /*navController.navigate("route") {
+        launchSingleTop = true
+        popUpTo(navController.graph.startDestinationId) {
+            saveState = true
+        }
+    }*/
 
     ModalNavigationDrawer(
         drawerContent = { ModalDrawerContent() },
@@ -83,10 +89,10 @@ fun NavigationApp(modifier: Modifier = Modifier, mainViewModel: MainViewModel = 
                     Home()
                 }
                 composable(route = RouteEnum.Saved.route) {
-                    SavedScreen()
+                    SavedScreen(mainViewModel = mainViewModel)
                 }
                 composable(route = RouteEnum.Profile.route) {
-                    UserProfileScreen()
+                    UserProfileScreen(mainViewModel = mainViewModel)
                 }
                 composable(route = RouteEnum.Notifications.route) {
                     NotificationScreen()
