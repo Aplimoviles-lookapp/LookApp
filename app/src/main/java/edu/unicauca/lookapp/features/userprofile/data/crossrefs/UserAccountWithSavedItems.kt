@@ -6,6 +6,8 @@ import androidx.room.Relation
 import edu.unicauca.lookapp.features.saved.data.entities.ItemEntity
 import edu.unicauca.lookapp.features.userprofile.data.entities.UserAccountEntity
 
+
+//Esto no lo use, no se necesita
 data class UserAccountWithSavedItems(
     @Embedded val user: UserAccountEntity,
     @Relation(
