@@ -30,4 +30,7 @@ object DatabaseModule {
 
     @Provides
     fun provideUserAccountDao(database: LookAppDatabase) = database.userAccountDao()
+
+    @Provides
+    fun provideShiftDao(database:LookAppDatabase)=database.shiftDao()
 }

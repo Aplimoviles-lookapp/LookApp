@@ -10,9 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.unicauca.lookapp.R
-import edu.unicauca.lookapp.core.ui.components.BottomNavBar
-import edu.unicauca.lookapp.core.ui.components.TopAppBar
-
+import edu.unicauca.lookapp.ui.components.BottomNavBar
+import edu.unicauca.lookapp.ui.components.TopAppBar
 
 @Composable
 fun Home(
@@ -20,7 +19,7 @@ fun Home(
 ){
     Column{
 
-        //TabBar()
+        TabBar()
         Spacer(modifier = Modifier.height(8.dp))
         Form()
     }
@@ -38,8 +37,8 @@ fun HomePreview(){
 @Composable
 fun HomeScreenPreview(){
     Scaffold (
-        
-      topBar = { TopAppBar(title = R.string.title_Home)},
+
+        topBar = { TopAppBar(title = R.string.title_Home)},
         bottomBar = { BottomNavBar() }
 
     ){ padding ->
