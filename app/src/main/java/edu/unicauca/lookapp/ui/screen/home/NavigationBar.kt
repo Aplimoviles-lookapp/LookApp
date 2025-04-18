@@ -133,8 +133,8 @@ fun TabBar(
             }
         }
 
-      
-        Box(
+
+        /*Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
@@ -146,7 +146,7 @@ fun TabBar(
                 2 -> Text("Vista de Productos")
                 3 -> Text("Vista de Sitios")
             }
-        }
+        }*/
     }
 }
 @Preview
