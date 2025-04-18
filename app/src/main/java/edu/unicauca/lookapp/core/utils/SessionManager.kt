@@ -1,4 +1,4 @@
-package edu.unicauca.lookapp.core.ui.viewmodel
+package edu.unicauca.lookapp.core.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,17 +11,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
-@HiltViewModel
-class MainViewModel @Inject constructor (
+@Singleton
+class SessionManager @Inject constructor (
     private val loadInitialSavedItemsUseCase: LoadInitialSavedItemsUseCase,
     private val loadInitialUserAccountsUseCase: LoadInitialUserAccountsUseCase
 ): ViewModel(){
     private val _uiState = MutableStateFlow(UserProfileUiState())
     val uiState: StateFlow<UserProfileUiState> = _uiState.asStateFlow()
 
-    fun loadInitialData() {
+    /*fun loadInitialData() {
         // This function is called when the app starts to load initial data
         // they must be launched in their own coroutine scope sequeentially
         /*viewModelScope.launch {
@@ -32,7 +33,7 @@ class MainViewModel @Inject constructor (
             loadInitialSavedItemsUseCase() // Inserta Items primero
             loadInitialUserAccountsUseCase() // Luego crea usuarios con esos Items
         }
-    }
+    }*/
 
     fun updateUserAccount(newUserAccount: UserAccount?) {
 

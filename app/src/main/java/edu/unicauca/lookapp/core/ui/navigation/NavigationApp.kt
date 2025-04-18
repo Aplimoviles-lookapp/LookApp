@@ -19,11 +19,10 @@ import edu.unicauca.lookapp.core.ui.components.BottomNavBar
 import edu.unicauca.lookapp.core.ui.components.ModalDrawerContent
 import edu.unicauca.lookapp.core.ui.components.TopAppBar
 import edu.unicauca.lookapp.core.ui.screen.credits.CreditsScreen
-import edu.unicauca.lookapp.core.ui.viewmodel.MainViewModel
+import edu.unicauca.lookapp.core.utils.SessionManager
 import edu.unicauca.lookapp.features.home.ui.screen.Home
 import edu.unicauca.lookapp.features.notifications.ui.screen.NotificationScreen
 import edu.unicauca.lookapp.features.saved.ui.screen.SavedScreen
-import edu.unicauca.lookapp.features.saved.ui.viewmodel.SavedViewModel
 import edu.unicauca.lookapp.features.search.ui.screen.SearchScreen
 import edu.unicauca.lookapp.features.userprofile.ui.screen.UserProfileScreen
 import kotlinx.coroutines.launch
@@ -31,10 +30,8 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun NavigationApp(modifier: Modifier = Modifier, mainViewModel: MainViewModel = hiltViewModel()) {
-    LaunchedEffect(Unit) {
-        mainViewModel.loadInitialData()
-    }
+fun NavigationApp(modifier: Modifier = Modifier) {
+
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
@@ -101,10 +98,10 @@ fun NavigationApp(modifier: Modifier = Modifier, mainViewModel: MainViewModel = 
                     Home()
                 }
                 composable(route = RouteEnum.Saved.route) {
-                    SavedScreen(mainViewModel = mainViewModel)
+                    SavedScreen()
                 }
                 composable(route = RouteEnum.Profile.route) {
-                    UserProfileScreen(mainViewModel = mainViewModel)
+                    UserProfileScreen()
                 }
                 composable(route = RouteEnum.Notifications.route) {
                     NotificationScreen()
