@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import edu.unicauca.lookapp.R
 import edu.unicauca.lookapp.core.ui.components.BottomNavBar
 import edu.unicauca.lookapp.core.ui.components.TopAppBar
-import edu.unicauca.lookapp.ui.screen.home.TabBar
+
 
 @Composable
 fun Home(
@@ -20,7 +20,7 @@ fun Home(
 ){
     Column{
 
-        TabBar()
+        //TabBar()
         Spacer(modifier = Modifier.height(8.dp))
         Form()
     }
