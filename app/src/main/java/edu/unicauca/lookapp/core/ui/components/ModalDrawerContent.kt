@@ -9,7 +9,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Help
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,10 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import edu.unicauca.lookapp.R
+import edu.unicauca.lookapp.core.ui.navigation.RouteEnum
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ModalDrawerContent(
+    onNavigate: (String) -> Unit,
+    drawerState: DrawerState,
+    scope: CoroutineScope,
     modifier: Modifier = Modifier,
 ) {
     ModalDrawerSheet {
@@ -100,6 +109,17 @@ fun ModalDrawerContent(
                 icon = { Icon(Icons.AutoMirrored.Outlined.Help, contentDescription = null) },
                 onClick = { /* Handle click */ },
             )
+            NavigationDrawerItem(
+                label = { Text(stringResource(R.string.lateral_txt_credits)) },
+                selected = false,
+                icon = { Icon(Icons.Outlined.Info, contentDescription = null) },
+                onClick = {
+                    scope.launch {
+                        drawerState.close()
+                        onNavigate(RouteEnum.Credits.route)
+                    }
+                },
+            )
             Spacer(Modifier.height(12.dp))
         }
     }
@@ -108,6 +128,5 @@ fun ModalDrawerContent(
 @Preview(showBackground = true, locale = "es")
 @Composable
 fun ModalDrawerContentPreview() {
-    ModalDrawerContent(
-    )
+
 }
