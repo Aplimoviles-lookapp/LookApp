@@ -18,8 +18,8 @@ import androidx.navigation.compose.rememberNavController
 import edu.unicauca.lookapp.core.ui.components.BottomNavBar
 import edu.unicauca.lookapp.core.ui.components.ModalDrawerContent
 import edu.unicauca.lookapp.core.ui.components.TopAppBar
+import edu.unicauca.lookapp.core.ui.screen.credits.CreditsScreen
 import edu.unicauca.lookapp.core.ui.viewmodel.MainViewModel
-import edu.unicauca.lookapp.features.credits.ui.screen.CreditsScreen
 import edu.unicauca.lookapp.features.home.ui.screen.Home
 import edu.unicauca.lookapp.features.notifications.ui.screen.NotificationScreen
 import edu.unicauca.lookapp.features.saved.ui.screen.SavedScreen

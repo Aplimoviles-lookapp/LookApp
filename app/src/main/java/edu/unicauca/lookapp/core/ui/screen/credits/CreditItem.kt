@@ -1,4 +1,4 @@
-package edu.unicauca.lookapp.features.credits.ui.screen
+package edu.unicauca.lookapp.core.ui.screen.credits
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
