@@ -36,6 +36,7 @@ class UserProfileViewModel @Inject constructor(
     fun signoutAllAccounts() {
         viewModelScope.launch {
             singnoutAllAccountsUseCase()
+            sessionManager.updateUserAccount(null)
         }
     }
 
