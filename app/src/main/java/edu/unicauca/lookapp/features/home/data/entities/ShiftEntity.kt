@@ -5,11 +5,11 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(tableName = "shift")
-data  class ShiftEntity (
+data class ShiftEntity (
     @PrimaryKey(autoGenerate = true)
     val shiftId: Long = 0,
     val nameAndLastName:String,
     val businessName:String,
-    val date:Date,
-    val time:String,
+    val date:String,
+    val time:String
 )

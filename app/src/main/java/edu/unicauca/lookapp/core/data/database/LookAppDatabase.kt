@@ -2,9 +2,10 @@ package edu.unicauca.lookapp.core.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import edu.unicauca.lookapp.features.home.data.dao.ShiftDao
+import edu.unicauca.lookapp.features.home.data.entities.ShiftEntity
+
+
 import edu.unicauca.lookapp.features.saved.data.dao.SavedDao
 import edu.unicauca.lookapp.features.saved.data.entities.ItemEntity
 import edu.unicauca.lookapp.features.userprofile.data.crossrefs.UserAccounItemCrossRef
@@ -16,7 +17,7 @@ import edu.unicauca.lookapp.features.userprofile.data.entities.UserAccountEntity
         ItemEntity::class,
         UserAccountEntity::class,
         UserAccounItemCrossRef::class,
-        ShiftDao::class
+        ShiftEntity::class
     ],
     version = 6,
     exportSchema = false
@@ -24,5 +25,5 @@ import edu.unicauca.lookapp.features.userprofile.data.entities.UserAccountEntity
 abstract class LookAppDatabase:RoomDatabase() {
     abstract fun savedDao(): SavedDao
     abstract fun userAccountDao(): UserAccountDao
-    abstract fun shiftDao():ShiftDao
+    abstract fun shiftDao(): ShiftDao
 }

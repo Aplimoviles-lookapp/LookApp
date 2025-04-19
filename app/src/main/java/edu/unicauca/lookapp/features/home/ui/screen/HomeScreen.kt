@@ -10,8 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.unicauca.lookapp.R
-import edu.unicauca.lookapp.ui.components.BottomNavBar
-import edu.unicauca.lookapp.ui.components.TopAppBar
+import edu.unicauca.lookapp.core.ui.components.BottomNavBar
+import edu.unicauca.lookapp.core.ui.components.TopAppBar
+import edu.unicauca.lookapp.ui.screen.home.TabBar
+
 
 @Composable
 fun Home(
