@@ -16,16 +16,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import edu.unicauca.lookapp.R
 import edu.unicauca.lookapp.core.ui.components.BottomNavBar
 import edu.unicauca.lookapp.core.ui.components.TopAppBar
-import edu.unicauca.lookapp.core.ui.viewmodel.MainViewModel
+import edu.unicauca.lookapp.core.utils.SessionManager
 import edu.unicauca.lookapp.features.userprofile.ui.viewmodel.UserProfileViewModel
 
 @Composable
-fun UserProfileScreen(modifier: Modifier = Modifier, userProfileViewModel: UserProfileViewModel = hiltViewModel(), mainViewModel: MainViewModel= hiltViewModel()) {
+fun UserProfileScreen(modifier: Modifier = Modifier, userProfileViewModel: UserProfileViewModel = hiltViewModel(), ) {
     Log.d("ATENCION","UserProfileScreen")
     val userAccounts = userProfileViewModel.getUserAccounts().collectAsState(
         initial = emptyList()
     )
-    val uiState by mainViewModel.uiState.collectAsState()
+    val uiState by userProfileViewModel.currentUser.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -41,7 +41,7 @@ fun UserProfileScreen(modifier: Modifier = Modifier, userProfileViewModel: UserP
                 onClickedAddAccount = { userProfileViewModel.addUserAccount() },
                 onClickedLoggoutAll = { userProfileViewModel.signoutAllAccounts() },
                 onClickedAccount = { userAccount ->
-                    mainViewModel.updateUserAccount(userAccount)
+                    userProfileViewModel.updateUserAccount(userAccount)
                     Log.d("ATENCION","Clicked user account: $userAccount")
                 }
             )

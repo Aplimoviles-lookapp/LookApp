@@ -8,6 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import edu.unicauca.lookapp.core.data.database.LookAppDatabase
+import edu.unicauca.lookapp.core.utils.SessionManager
+import edu.unicauca.lookapp.features.saved.domain.usecases.LoadInitialSavedItemsUseCase
+import edu.unicauca.lookapp.features.userprofile.domain.usecases.LoadInitialUserAccountsUseCase
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Provider
 import javax.inject.Singleton
