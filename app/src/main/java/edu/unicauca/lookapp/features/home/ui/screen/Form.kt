@@ -144,7 +144,6 @@ fun Form(
         ConfirmationDialog(onDismiss = { shiftViewModel.dismissDialog() })
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerModal(
@@ -155,7 +154,7 @@ fun DatePickerModal(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Selecciona una fecha") },
+        title = { Text("Select a Date") },
         text = {
             DatePicker(
                 state = datePickerState,
@@ -164,18 +163,7 @@ fun DatePickerModal(
         },
         confirmButton = {
             Button(onClick = {
-                datePickerState.selectedDateMillis?.let { millis ->
-                    // Esta línea es clave: crea el Date a medianoche en hora local.
-                    val calendar = java.util.Calendar.getInstance(TimeZone.getDefault()).apply {
-                        timeInMillis = millis
-                        // forzamos la hora a medianoche
-                        set(java.util.Calendar.HOUR_OF_DAY, 0)
-                        set(java.util.Calendar.MINUTE, 0)
-                        set(java.util.Calendar.SECOND, 0)
-                        set(java.util.Calendar.MILLISECOND, 0)
-                    }
-                    onDateSelected(calendar.timeInMillis)
-                }
+                datePickerState.selectedDateMillis?.let { onDateSelected(it) }
                 onDismiss()
             }) {
                 Text("OK")
@@ -183,42 +171,38 @@ fun DatePickerModal(
         },
         dismissButton = {
             Button(onClick = onDismiss) {
-                Text("Cancelar")
+                Text("Cancel")
             }
         }
     )
 }
-
-fun formatDateToString(date: Date): String {
-    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    return sdf.format(date)
-}
 @Composable
 fun DatePickerFieldToModal(
-    selectedDate: Date?,
-    onDateSelected: (Date) -> Unit
+    selectedDate: Date?, // Cambiado de Long? a Date?
+    onDateSelected: (Date) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var showModal by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = selectedDate?.let { formatDateToString(it) } ?: "",
+        value = selectedDate?.let { convertDateToFormattedString(it) } ?: "",
         onValueChange = { },
-        label = { Text("Fecha",
-            style = MaterialTheme.typography.bodySmall
-            )
-                },
+        label = { Text("Fecha") },
         placeholder = { Text("DD/MM/YYYY") },
         trailingIcon = {
-            Icon(Icons.Default.DateRange, contentDescription = "Select date")
+            Icon(Icons.Default.DateRange, contentDescription = "Selecciona Fecha")
         },
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.surfaceContainerHighest)
             .fillMaxWidth()
-            .pointerInput(Unit) {
+            .pointerInput(selectedDate)
+            {
                 awaitEachGesture {
                     awaitFirstDown(pass = PointerEventPass.Initial)
                     val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
-                    if (upEvent != null) showModal = true
+                    if (upEvent != null) {
+                        showModal = true
+                    }
                 }
             }
     )
@@ -235,6 +219,13 @@ fun DatePickerFieldToModal(
 }
 
 
+
+fun convertDateToFormattedString(date: Date): String {
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
+    return formatter.format(date)
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
