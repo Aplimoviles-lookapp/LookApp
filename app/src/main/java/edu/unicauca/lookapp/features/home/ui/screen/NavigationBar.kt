@@ -2,6 +2,7 @@ package edu.unicauca.lookapp.ui.screen.home
 
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,8 +34,9 @@ fun NavigationBarMenuMain(
 ){
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface,
-        modifier = modifier
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+        
     ) {
 
         NavigationBarItem(
@@ -96,16 +98,17 @@ fun TabBar(
     Column {
         TabRow(
             selectedTabIndex = selectedTabIndex,
-            containerColor = Color(0xFFFCF7FF),
-            contentColor = Color(0xFF4A2C84),
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     modifier = Modifier
+
                         .tabIndicatorOffset(tabPositions[selectedTabIndex])
                         .padding(horizontal = 16.dp)
                         .height(3.dp)
                         .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)), // Redondeado
-                    color = Color(0xFF4A2C84)
+                   color = MaterialTheme.colorScheme.primary
                 )
             },
             divider = {}
@@ -114,8 +117,8 @@ fun TabBar(
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    selectedContentColor = Color(0xFF4A2C84), // Texto morado activo
-                    unselectedContentColor = Color.Gray,     // Texto gris inactivo
+                    selectedContentColor = MaterialTheme.colorScheme.primary,
+                    unselectedContentColor =  MaterialTheme.colorScheme.onSurfaceVariant,
                     text = {
                         Text(
                             text = title,
@@ -127,19 +130,6 @@ fun TabBar(
         }
 
 
-        /*Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            when (selectedTabIndex) {
-                0 -> Text("Vista de Agendar")
-                1 -> Text("Vista de Cola")
-                2 -> Text("Vista de Productos")
-                3 -> Text("Vista de Sitios")
-            }
-        }*/
     }
 }
 @Preview

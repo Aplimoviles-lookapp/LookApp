@@ -1,6 +1,7 @@
 package edu.unicauca.lookapp.features.home.ui.screen
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -33,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -45,21 +45,26 @@ import edu.unicauca.lookapp.features.home.ui.viewmodel.ShiftViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
+import java.util.TimeZone
 
 
 @Composable
 fun Form(
     modifier: Modifier = Modifier,
     shiftViewModel: ShiftViewModel = hiltViewModel(),
+
 ) {
 
    val shiftUiState=shiftViewModel.shiftUiState
+    val sitios = shiftViewModel.sitios
+    val servicios = shiftViewModel.servicios
+
     Column(
 
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
+
 
     ) {
 
@@ -83,37 +88,25 @@ fun Form(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TextField(
-            value = shiftUiState.shiftDetails.servicio,
-            onValueChange = {shiftViewModel.updateServicio(it)},
-            label = {
-                Text(
-                    text="Servicio" ,
-                    modifier=Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodySmall
-
-                )
-
-            },
-            modifier = Modifier.fillMaxWidth()
+        // DropDown de Negocios
+        DropDownMenu(
+            label = "Nombre del Negocio",
+            options = sitios.map { it.name },
+            selectedOption = shiftUiState.shiftDetails.negocio,
+            onOptionSelected = { shiftViewModel.onSelectNegocio(it) }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TextField(
-            value = shiftUiState.shiftDetails.negocio,
-            onValueChange = { shiftViewModel.updateNegocio(it)},
-            label = {
-                Text(text="Nombre del Negocio",
-                    modifier=Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodySmall
-
-                )
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (shiftUiState.shiftDetails.negocio.isNotEmpty()) {
+            DropDownMenu(
+                label = "Servicio",
+                options = servicios,
+                selectedOption = shiftUiState.shiftDetails.servicio,
+                onOptionSelected = { shiftViewModel.onSelectServicio(it) }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
         DatePickerFieldToModal(
@@ -122,8 +115,10 @@ fun Form(
         )
         Spacer(modifier = Modifier.height(8.dp))
         DropDownMenu(
+            label = "Horario",
+            options = listOf("9:00-10:00", "10:00-11:00", "11:00-1:00"),
             selectedOption = shiftUiState.shiftDetails.horario,
-            onOptionSelected = {shiftViewModel.updateHorario(it) }
+            onOptionSelected = { shiftViewModel.updateHorario(it) }
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row (
@@ -131,16 +126,22 @@ fun Form(
             horizontalArrangement = Arrangement.End
         ){
 
-            OutlinedButtonExample(onClick = {})
+            OutlinedButtonExample(onClick = {
+                shiftViewModel.clearForm()
+            })
             Spacer(modifier=Modifier.width(8.dp))
             FilledButtonExample(
                 onClick = {
                     shiftViewModel.insertShift()
                     shiftViewModel.clearForm()
+                    shiftViewModel.showDialog()
                 }
             )
         }
 
+    }
+    if (shiftViewModel.showConfirmationDialog) {
+        ConfirmationDialog(onDismiss = { shiftViewModel.dismissDialog() })
     }
 }
 
@@ -154,7 +155,7 @@ fun DatePickerModal(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select a Date") },
+        title = { Text("Selecciona una fecha") },
         text = {
             DatePicker(
                 state = datePickerState,
@@ -163,7 +164,18 @@ fun DatePickerModal(
         },
         confirmButton = {
             Button(onClick = {
-                datePickerState.selectedDateMillis?.let { onDateSelected(it) }
+                datePickerState.selectedDateMillis?.let { millis ->
+                    // Esta línea es clave: crea el Date a medianoche en hora local.
+                    val calendar = java.util.Calendar.getInstance(TimeZone.getDefault()).apply {
+                        timeInMillis = millis
+                        // forzamos la hora a medianoche
+                        set(java.util.Calendar.HOUR_OF_DAY, 0)
+                        set(java.util.Calendar.MINUTE, 0)
+                        set(java.util.Calendar.SECOND, 0)
+                        set(java.util.Calendar.MILLISECOND, 0)
+                    }
+                    onDateSelected(calendar.timeInMillis)
+                }
                 onDismiss()
             }) {
                 Text("OK")
@@ -171,7 +183,7 @@ fun DatePickerModal(
         },
         dismissButton = {
             Button(onClick = onDismiss) {
-                Text("Cancel")
+                Text("Cancelar")
             }
         }
     )
@@ -191,12 +203,16 @@ fun DatePickerFieldToModal(
     OutlinedTextField(
         value = selectedDate?.let { formatDateToString(it) } ?: "",
         onValueChange = { },
-        label = { Text("Fecha") },
+        label = { Text("Fecha",
+            style = MaterialTheme.typography.bodySmall
+            )
+                },
         placeholder = { Text("DD/MM/YYYY") },
         trailingIcon = {
             Icon(Icons.Default.DateRange, contentDescription = "Select date")
         },
         modifier = Modifier
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
             .fillMaxWidth()
             .pointerInput(Unit) {
                 awaitEachGesture {
@@ -224,16 +240,14 @@ fun DatePickerFieldToModal(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownMenu(
+    label: String,
+    options: List<String>,
     selectedOption: String,
     onOptionSelected: (String) -> Unit
 ) {
-    val list = listOf("9:00-10:00", "10:00-11:00", "11:00-1:00")
     var isExpanded by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         ExposedDropdownMenuBox(
             expanded = isExpanded,
             onExpandedChange = { isExpanded = !isExpanded }
@@ -243,18 +257,21 @@ fun DropDownMenu(
                 value = selectedOption,
                 onValueChange = {},
                 readOnly = true,
-                placeholder = { Text("Seleccione una opción") },
+                label = { Text(label,
+                    style = MaterialTheme.typography.bodySmall
+                    ) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) }
             )
+
             ExposedDropdownMenu(
                 expanded = isExpanded,
                 onDismissRequest = { isExpanded = false }
             ) {
-                list.forEach { text ->
+                options.forEach { option ->
                     DropdownMenuItem(
-                        text = { Text(text) },
+                        text = { Text(option) },
                         onClick = {
-                            onOptionSelected(text)
+                            onOptionSelected(option)
                             isExpanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -282,6 +299,22 @@ fun OutlinedButtonExample(onClick: () -> Unit) {
         Text(text = "Cancelar")
     }
 }
+@Composable
+fun ConfirmationDialog(
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Cita Agendada") },
+        text = { Text("Tu cita ha sido agendada exitosamente.") },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text("Aceptar")
+            }
+        }
+    )
+}
+
 @Preview
 @Composable
 fun FormPreview(){

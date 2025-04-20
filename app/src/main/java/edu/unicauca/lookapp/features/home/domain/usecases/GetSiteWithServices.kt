@@ -4,7 +4,6 @@ import edu.unicauca.lookapp.features.home.data.repository.SiteRepository
 import javax.inject.Inject
 
 class GetSiteWithServices @Inject constructor(private val siteRepository: SiteRepository) {
-    suspend operator fun invoke(siteId:Long){
-        siteRepository.getSiteWithServices(siteId)
-    }
+    suspend operator fun invoke(siteId:Long)=siteRepository.getSiteWithServices(siteId)
+
 }

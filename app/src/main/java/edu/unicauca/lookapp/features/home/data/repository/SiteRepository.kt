@@ -3,6 +3,7 @@ package edu.unicauca.lookapp.features.home.data.repository
 import edu.unicauca.lookapp.features.home.data.datasource.ServiceDataSource
 import edu.unicauca.lookapp.features.home.data.datasource.SiteDataSource
 import edu.unicauca.lookapp.features.home.data.datasource.SiteServiceCrossRefDataSource
+import edu.unicauca.lookapp.features.home.data.entities.SiteWithService
 import edu.unicauca.lookapp.features.home.data.prepopulate.InitialServiceDataProvider
 import edu.unicauca.lookapp.features.home.data.prepopulate.InitialSiteDataProvider
 import edu.unicauca.lookapp.features.home.data.prepopulate.InitialSiteWithServiceDataProvider
@@ -14,8 +15,8 @@ class SiteRepository @Inject constructor(
     private val serviceDataSource: ServiceDataSource,
     private val crossRefDataSource: SiteServiceCrossRefDataSource
 ){
-    suspend fun getSiteWithServices(siteId:Long){
-        siteDataSource.getSiteWithServices(siteId)
+    suspend fun getSiteWithServices(siteId:Long): SiteWithService {
+       return  siteDataSource.getSiteWithServices(siteId)
     }
     fun getAllSites()=siteDataSource.getAllSites()
 
