@@ -10,4 +10,7 @@ class ShiftRepository @Inject constructor(private val shiftDataSource:ShiftDataS
         shiftDataSource.insertShift(shift)
     }
     fun getAll()=shiftDataSource.getAll()
+
+
+
 }

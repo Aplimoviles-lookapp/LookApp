@@ -3,6 +3,7 @@ package edu.unicauca.lookapp.core.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.unicauca.lookapp.features.home.domain.usecases.LoadInitialSiteServiceUseCase
 import edu.unicauca.lookapp.features.saved.domain.usecases.LoadInitialSavedItemsUseCase
 import edu.unicauca.lookapp.features.userprofile.domain.usecases.LoadInitialUserAccountsUseCase
 import edu.unicauca.lookapp.features.userprofile.ui.screen.UserAccount
@@ -17,7 +18,8 @@ import javax.inject.Singleton
 @Singleton
 class SessionManager @Inject constructor (
     private val loadInitialSavedItemsUseCase: LoadInitialSavedItemsUseCase,
-    private val loadInitialUserAccountsUseCase: LoadInitialUserAccountsUseCase
+    private val loadInitialUserAccountsUseCase: LoadInitialUserAccountsUseCase,
+    private val loadInitialSiteServiceUseCase: LoadInitialSiteServiceUseCase
 ): ViewModel(){
     private val _uiState = MutableStateFlow(UserProfileUiState())
     val uiState: StateFlow<UserProfileUiState> = _uiState.asStateFlow()

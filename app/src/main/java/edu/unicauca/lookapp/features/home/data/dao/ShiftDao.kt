@@ -13,6 +13,7 @@ interface ShiftDao {
     @Insert
     suspend fun insertShift(shift: ShiftEntity)
     @Query("SELECT * FROM shift")
+
     fun getAll(): Flow<List<ShiftEntity>>
 
 }

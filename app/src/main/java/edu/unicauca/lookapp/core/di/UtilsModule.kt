@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import edu.unicauca.lookapp.core.utils.SessionManager
+import edu.unicauca.lookapp.features.home.domain.usecases.LoadInitialSiteServiceUseCase
 import edu.unicauca.lookapp.features.saved.domain.usecases.LoadInitialSavedItemsUseCase
 import edu.unicauca.lookapp.features.userprofile.domain.usecases.LoadInitialUserAccountsUseCase
 import javax.inject.Singleton
@@ -15,9 +16,10 @@ import javax.inject.Singleton
 object UtilsModule {
     @Provides
     @Singleton
-    fun provideSessionManager(saved: LoadInitialSavedItemsUseCase, userAccount: LoadInitialUserAccountsUseCase): SessionManager = SessionManager(
+    fun provideSessionManager(saved: LoadInitialSavedItemsUseCase, userAccount: LoadInitialUserAccountsUseCase, siteService:LoadInitialSiteServiceUseCase): SessionManager = SessionManager(
         loadInitialSavedItemsUseCase = saved,
-        loadInitialUserAccountsUseCase = userAccount
+        loadInitialUserAccountsUseCase = userAccount,
+        loadInitialSiteServiceUseCase=siteService
     )
 
 }
