@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -26,7 +27,18 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        Text(
+            text = "LOOKAPP es una aplicación la cual los usuarios van a poder realizar " +
+                    "la separación de turno para peluqueria o salon de belleza, además " +
+                    "permitirá visualizar tipos de peinados, cortes de pelo, también el tipo " +
+                    "y diseño de uñas de manos y pies. La aplicación también notificará " +
+                    "promociones de artículos o de servicios y permitirá ver los lugares " +
+                    "cercanos en un mapa",
+            style = MaterialTheme.typography.titleMedium.copy(textAlign = TextAlign.Justify),
+            modifier = Modifier.padding(bottom = 8.dp),
+            color = Color.Gray
+        )
+        Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = "Esta app fue desarrollada por:",
             style = MaterialTheme.typography.titleMedium,
