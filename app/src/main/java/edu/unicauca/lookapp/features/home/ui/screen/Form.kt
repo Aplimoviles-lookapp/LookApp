@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.unicauca.lookapp.features.home.ui.viewmodel.ShiftViewModel
+import edu.unicauca.lookapp.features.saved.ui.viewmodel.SavedViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -52,12 +54,20 @@ import java.util.TimeZone
 fun Form(
     modifier: Modifier = Modifier,
     shiftViewModel: ShiftViewModel = hiltViewModel(),
+     savedViewModel: SavedViewModel = hiltViewModel()
+
 
 ) {
 
    val shiftUiState=shiftViewModel.shiftUiState
     val sitios = shiftViewModel.sitios
     val servicios = shiftViewModel.servicios
+    val sessionState by savedViewModel.sessionManager.uiState.collectAsState()
+    val userName = sessionState.currentUserAccount?.name ?: ""
+    if (shiftUiState.shiftDetails.nombre.isBlank() && userName.isNotBlank()) {
+        shiftViewModel.updateNombre(userName)
+    }
+
 
     Column(
 
@@ -70,7 +80,8 @@ fun Form(
 
         TextField(
 
-            value = shiftUiState.shiftDetails.nombre,
+            value=shiftUiState.shiftDetails.nombre,
+           // value = shiftUiState.shiftDetails.nombre,
             onValueChange = { shiftViewModel.updateNombre(it)},
             label = {
                 Text(
@@ -178,7 +189,7 @@ fun DatePickerModal(
 }
 @Composable
 fun DatePickerFieldToModal(
-    selectedDate: Date?, // Cambiado de Long? a Date?
+    selectedDate: Date?,
     onDateSelected: (Date) -> Unit,
     modifier: Modifier = Modifier
 ) {

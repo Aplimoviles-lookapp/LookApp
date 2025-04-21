@@ -20,7 +20,7 @@ class SavedViewModel @Inject constructor (
     private val loadInitialDataUseCase: LoadInitialSavedItemsUseCase,
     private val getSavedItemsUseCase: GetSavedItemsUseCase,
     private val deleteSavedItemUseCase: DeleteSavedItemUseCase,
-    private val sessionManager: SessionManager,
+    val sessionManager: SessionManager,
 ): ViewModel() {
 
     val currentUser = sessionManager.uiState
@@ -45,5 +45,7 @@ class SavedViewModel @Inject constructor (
             deleteSavedItemUseCase(id)
         }
     }
+
+
 
 }
