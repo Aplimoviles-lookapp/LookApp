@@ -9,7 +9,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import edu.unicauca.lookapp.core.data.database.LookAppDatabase
 import edu.unicauca.lookapp.core.utils.SessionManager
-import edu.unicauca.lookapp.features.notifications.data.dao.NotificationDao
 import edu.unicauca.lookapp.features.saved.domain.usecases.LoadInitialSavedItemsUseCase
 import edu.unicauca.lookapp.features.userprofile.domain.usecases.LoadInitialUserAccountsUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -36,6 +35,9 @@ object DatabaseModule {
     fun provideUserAccountDao(database: LookAppDatabase) = database.userAccountDao()
 
     @Provides
-    fun provideNotificationDao(database: LookAppDatabase): NotificationDao =
-        database.notificationDao()
+    fun provideShiftDao(database:LookAppDatabase)=database.shiftDao()
+    @Provides
+    fun provideSiteDao(database: LookAppDatabase)=database.siteDao()
+    @Provides
+    fun provideServiceDao(database: LookAppDatabase)=database.serviceDao()
 }
