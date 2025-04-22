@@ -33,4 +33,11 @@ object DatabaseModule {
 
     @Provides
     fun provideUserAccountDao(database: LookAppDatabase) = database.userAccountDao()
+
+    @Provides
+    fun provideShiftDao(database:LookAppDatabase)=database.shiftDao()
+    @Provides
+    fun provideSiteDao(database: LookAppDatabase)=database.siteDao()
+    @Provides
+    fun provideServiceDao(database: LookAppDatabase)=database.serviceDao()
 }

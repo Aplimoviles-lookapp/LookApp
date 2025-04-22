@@ -1,18 +1,16 @@
 package edu.unicauca.lookapp.features.home.ui.screen
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
-
 import androidx.compose.foundation.layout.Arrangement
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -26,44 +24,50 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-
 import androidx.compose.material3.rememberDatePickerState
-
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
-
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
+import androidx.hilt.navigation.compose.hiltViewModel
+import edu.unicauca.lookapp.features.home.ui.viewmodel.ShiftViewModel
+import edu.unicauca.lookapp.features.saved.ui.viewmodel.SavedViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-
+import java.util.TimeZone
 
 
 @Composable
 fun Form(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    shiftViewModel: ShiftViewModel = hiltViewModel(),
+     savedViewModel: SavedViewModel = hiltViewModel()
+
+
 ) {
-    var nombre by remember { mutableStateOf("") }
-    var servicio by remember { mutableStateOf("") }
-    var negocio by remember { mutableStateOf("") }
-    //var fecha by remember { mutableStateOf("") }
+
+   val shiftUiState=shiftViewModel.shiftUiState
+    val sitios = shiftViewModel.sitios
+    val servicios = shiftViewModel.servicios
+    val sessionState by savedViewModel.sessionManager.uiState.collectAsState()
+    val userName = sessionState.currentUserAccount?.name ?: ""
+    if (shiftUiState.shiftDetails.nombre.isBlank() && userName.isNotBlank()) {
+        shiftViewModel.updateNombre(userName)
+    }
+
 
     Column(
 
@@ -71,51 +75,17 @@ fun Form(
             .fillMaxWidth()
             .padding(16.dp)
 
+
     ) {
 
         TextField(
 
-            value = nombre,
-            onValueChange = { nombre = it },
+            value=shiftUiState.shiftDetails.nombre,
+           // value = shiftUiState.shiftDetails.nombre,
+            onValueChange = { shiftViewModel.updateNombre(it)},
             label = {
                 Text(
-                    text="Nombre y Apellido",
-                    modifier=Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodySmall
-
-                )
-                },
-            modifier = Modifier.fillMaxWidth()
-
-
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextField(
-            value = servicio,
-            onValueChange = { servicio = it },
-            label = {
-                Text(
-                    text="Servicio" ,
-                    modifier=Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodySmall
-
-                )
-
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextField(
-            value = negocio,
-            onValueChange = { negocio = it },
-            label = {
-                Text(text="Nombre del Negocio",
+                    text="Nombre",
                     modifier=Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodySmall
@@ -123,82 +93,68 @@ fun Form(
                 )
             },
             modifier = Modifier.fillMaxWidth()
+
+
         )
 
-        //Spacer(modifier = Modifier.height(8.dp))
-        //DatePickerDocked()
         Spacer(modifier = Modifier.height(8.dp))
-        DatePickerFieldToModal()
+
+        // DropDown de Negocios
+        DropDownMenu(
+            label = "Nombre del Negocio",
+            options = sitios.map { it.name },
+            selectedOption = shiftUiState.shiftDetails.negocio,
+            onOptionSelected = { shiftViewModel.onSelectNegocio(it) }
+        )
+
         Spacer(modifier = Modifier.height(8.dp))
-        DropDownMenu()
+
+        if (shiftUiState.shiftDetails.negocio.isNotEmpty()) {
+            DropDownMenu(
+                label = "Servicio",
+                options = servicios,
+                selectedOption = shiftUiState.shiftDetails.servicio,
+                onOptionSelected = { shiftViewModel.onSelectServicio(it) }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        DatePickerFieldToModal(
+            selectedDate = shiftUiState.shiftDetails.fecha,
+            onDateSelected = { shiftViewModel.updateFecha(it) }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        DropDownMenu(
+            label = "Horario",
+            options = listOf("9:00-10:00", "10:00-11:00", "11:00-1:00"),
+            selectedOption = shiftUiState.shiftDetails.horario,
+            onOptionSelected = { shiftViewModel.updateHorario(it) }
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Row (
             modifier=Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ){
 
-            OutlinedButtonExample(onClick = {})
+            OutlinedButtonExample(onClick = {
+                shiftViewModel.clearForm()
+            })
             Spacer(modifier=Modifier.width(8.dp))
-            FilledButtonExample(onClick = {})
+            FilledButtonExample(
+                onClick = {
+                    shiftViewModel.insertShift()
+                    shiftViewModel.clearForm()
+                    shiftViewModel.showDialog()
+                }
+            )
         }
 
     }
-}
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePickerDocked() {
-    var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: ""
-
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            value = selectedDate,
-            onValueChange = { },
-            label = { Text("DOB") },
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
-                    )
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp)
-        )
-
-        if (showDatePicker) {
-            Popup(
-                onDismissRequest = { showDatePicker = false },
-                alignment = Alignment.TopStart
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .offset(y = 64.dp)
-                        .shadow(elevation = 4.dp)
-                        .background(MaterialTheme.colorScheme.surface)
-                        .padding(16.dp)
-                ) {
-                    DatePicker(
-                        state = datePickerState,
-                        showModeToggle = false
-                    )
-                }
-            }
-        }
+    if (shiftViewModel.showConfirmationDialog) {
+        ConfirmationDialog(onDismiss = { shiftViewModel.dismissDialog() })
     }
 }
-
-*/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerModal(
@@ -231,28 +187,28 @@ fun DatePickerModal(
         }
     )
 }
-
-
 @Composable
-fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+fun DatePickerFieldToModal(
+    selectedDate: Date?,
+    onDateSelected: (Date) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var showModal by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: "",
+        value = selectedDate?.let { convertDateToFormattedString(it) } ?: "",
         onValueChange = { },
         label = { Text("Fecha") },
-        placeholder = { Text("MM/DD/YYYY") },
+        placeholder = { Text("DD/MM/YYYY") },
         trailingIcon = {
-            Icon(Icons.Default.DateRange, contentDescription = "Select date")
+            Icon(Icons.Default.DateRange, contentDescription = "Selecciona Fecha")
         },
         modifier = modifier
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
             .fillMaxWidth()
-            .pointerInput(selectedDate) {
+            .pointerInput(selectedDate)
+            {
                 awaitEachGesture {
-                    // Modifier.clickable doesn't work for text fields, so we use Modifier.pointerInput
-                    // in the Initial pass to observe events before the text field consumes them
-                    // in the Main pass.
                     awaitFirstDown(pass = PointerEventPass.Initial)
                     val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
                     if (upEvent != null) {
@@ -264,7 +220,10 @@ fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
 
     if (showModal) {
         DatePickerModal(
-            onDateSelected = { selectedDate = it },
+            onDateSelected = {
+                onDateSelected(Date(it))
+                showModal = false
+            },
             onDismiss = { showModal = false }
         )
     }
@@ -272,53 +231,56 @@ fun DatePickerFieldToModal(modifier: Modifier = Modifier) {
 
 
 
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
+fun convertDateToFormattedString(date: Date): String {
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
+    return formatter.format(date)
 }
 
-//Drop down menu
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownMenu(){
-    val list= listOf("9:00-10:00","10:00-11:00", "11:00")
+fun DropDownMenu(
+    label: String,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit
+) {
     var isExpanded by remember { mutableStateOf(false) }
-    var selectedText by remember{ mutableStateOf(list[0])}
 
-    Column (
-        modifier=Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    Column(modifier = Modifier.fillMaxWidth()) {
         ExposedDropdownMenuBox(
-            expanded =isExpanded ,
-            onExpandedChange ={isExpanded=!isExpanded}
+            expanded = isExpanded,
+            onExpandedChange = { isExpanded = !isExpanded }
         ) {
             TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value =selectedText,
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
+                value = selectedOption,
                 onValueChange = {},
                 readOnly = true,
-                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)}
-
-
+                label = { Text(label,
+                    style = MaterialTheme.typography.bodySmall
+                    ) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) }
             )
+
             ExposedDropdownMenu(
-                expanded = isExpanded, onDismissRequest = {isExpanded=false}
+                expanded = isExpanded,
+                onDismissRequest = { isExpanded = false }
             ) {
-                list.forEachIndexed{index,text->
-                DropdownMenuItem(
-                    text={Text(text=text)},
-                    onClick = {
-                        selectedText=list[index]
-                        isExpanded=false
-                    },
-                    contentPadding =ExposedDropdownMenuDefaults.ItemContentPadding
-
-                )}
+                options.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text(option) },
+                        onClick = {
+                            onOptionSelected(option)
+                            isExpanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
             }
-
         }
-        //Text(text="Current selected$selectedText")
     }
 }
 
@@ -327,7 +289,7 @@ fun FilledButtonExample(
     onClick:()->Unit
 ){
     Button(
-        onClick={onClick()}
+        onClick=onClick
     ) {
         Text(text="Agendar")
     }
@@ -335,12 +297,31 @@ fun FilledButtonExample(
 }
 @Composable
 fun OutlinedButtonExample(onClick: () -> Unit) {
-    OutlinedButton(onClick = { onClick() }) {
+    OutlinedButton(onClick = onClick) {
         Text(text = "Cancelar")
     }
 }
+@Composable
+fun ConfirmationDialog(
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Cita Agendada") },
+        text = { Text("Tu cita ha sido agendada exitosamente.") },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text("Aceptar")
+            }
+        }
+    )
+}
+
 @Preview
 @Composable
 fun FormPreview(){
-    Form()
+    Form(
+
+    )
+
 }

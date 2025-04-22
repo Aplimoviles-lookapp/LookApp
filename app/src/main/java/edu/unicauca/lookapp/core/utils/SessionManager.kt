@@ -1,15 +1,14 @@
 package edu.unicauca.lookapp.core.utils
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.unicauca.lookapp.features.home.domain.usecases.LoadInitialServiceUseCase
+import edu.unicauca.lookapp.features.home.domain.usecases.LoadInitialSiteUseCase
 import edu.unicauca.lookapp.features.saved.domain.usecases.LoadInitialSavedItemsUseCase
 import edu.unicauca.lookapp.features.userprofile.domain.usecases.LoadInitialUserAccountsUseCase
 import edu.unicauca.lookapp.features.userprofile.ui.screen.UserAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,7 +16,9 @@ import javax.inject.Singleton
 @Singleton
 class SessionManager @Inject constructor (
     private val loadInitialSavedItemsUseCase: LoadInitialSavedItemsUseCase,
-    private val loadInitialUserAccountsUseCase: LoadInitialUserAccountsUseCase
+    private val loadInitialUserAccountsUseCase: LoadInitialUserAccountsUseCase,
+    private val loadInitialSiteUseCase: LoadInitialSiteUseCase,
+   // private val loadInitialServiceUseCase:LoadInitialServiceUseCase
 ): ViewModel(){
     private val _uiState = MutableStateFlow(UserProfileUiState())
     val uiState: StateFlow<UserProfileUiState> = _uiState.asStateFlow()
