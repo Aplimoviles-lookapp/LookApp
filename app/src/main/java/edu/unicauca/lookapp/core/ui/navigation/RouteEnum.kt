@@ -7,7 +7,9 @@ enum class RouteEnum(val route: String, val title: Int) {
     Search("search", R.string.title_Search),
     Saved("saved", R.string.title_saved),
     Notifications("notifications",R.string.title_notifications),
-    Profile("profile", R.string.title_user_data);
+    Profile("profile", R.string.title_user_data),
+    Credits("Credits", R.string.title_credits);
+
 
     companion object {
         private val map = entries.associateBy(RouteEnum::route)

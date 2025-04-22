@@ -1,89 +1,98 @@
 package edu.unicauca.lookapp.features.notifications.ui.screen
 
-import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import edu.unicauca.lookapp.R
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import edu.unicauca.lookapp.features.notifications.domain.model.Notification
+import edu.unicauca.lookapp.features.notifications.ui.viewmodel.NotificationsViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationScreen(modifier: Modifier = Modifier) {
-    val recentNotifications = listOf(
-        NotificationModel("A", "Tu reserva ha sido exitosa", "Su reserva ha sido designada para el día 12/02/2025 a las 11:40 AM."),
-        NotificationModel("T", "¡Se ha liberado un turno!", "Un turno ha quedado disponible en Vanity para HOY a las 3:00 PM. ¡Reserva antes de que se ocupe!"),
-        NotificationModel("T", "¡Se ha liberado un turno!", "Un turno ha quedado disponible en Vanity para HOY a las 3:00 PM. ¡Reserva antes de que se ocupe!"),
-        NotificationModel("T", "¡Se ha liberado un turno!", "Un turno ha quedado disponible en Vanity para HOY a las 3:00 PM. ¡Reserva antes de que se ocupe!"),
-        NotificationModel("T", "¡Se ha liberado un turno!", "Un turno ha quedado disponible en Vanity para HOY a las 3:00 PM. ¡Reserva antes de que se ocupe!"),
-        NotificationModel("T", "¡Se ha liberado un turno!", "Un turno ha quedado disponible en Vanity para HOY a las 3:00 PM. ¡Reserva antes de que se ocupe!")
-    )
+fun NotificationScreen(
+    viewModel: NotificationsViewModel = hiltViewModel()
+) {
+    val notifications by viewModel.notifications.collectAsState()
 
-    val pastNotifications = listOf(
-        NotificationModel("B", "¡Descuento exclusivo para ti!", "Solo por hoy, 30% de descuento en cortes y peinados en Barber Shop. ¡Reserva tu turno!"),
-        NotificationModel("L", "¡Nuevo combo de belleza!", "Manicure + Pedicure + Peinado por solo 40.000 en Lilis. ¡Aprovecha esta oferta limitada!")
-    )
-
-    val context = LocalContext.current
-    val channelID = "chat"
-    val channelName = "Chat Notifications"
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(channelID, channelName, importance)
-        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.createNotificationChannel(channel)
-    }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            // Mostrar un mensaje
-        }
-    }
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .verticalScroll(rememberScrollState())
-    ) {
-        NotificationsSection(title = "HOY", notifications = recentNotifications)
-        NotificationsSection(title = "AYER", notifications = pastNotifications)
-        Button(onClick = {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
-                    android.content.pm.PackageManager.PERMISSION_GRANTED
+    Scaffold(
+        floatingActionButton = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                FloatingActionButton(
+                    onClick = { viewModel.deleteAll() },
+                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer
                 ) {
-                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                    return@Button
+                    Icon(Icons.Default.Delete, contentDescription = "Borrar todo")
+                }
+
+                FloatingActionButton(
+                    onClick = { viewModel.createFakeNotifications() },
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Agregar")
                 }
             }
+        }
+    ) { padding ->
+        if (notifications.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("No tienes notificaciones.")
+            }
+        } else {
+            val grouped = groupNotificationsByDay(notifications)
 
-            val notification = NotificationCompat.Builder(context, channelID)
-                .setContentTitle("Título")
-                .setContentText("Esto es un texto")
-                .setSmallIcon(R.drawable.ic_notification)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .build()
-
-            val notificationManager = NotificationManagerCompat.from(context)
-            notificationManager.notify(1, notification)
-
-        }) {
-            Text("Enviar Notificación")
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            ) {
+                grouped.forEach { (title, list) ->
+                    item {
+                        NotificationsSection(title = title, notifications = list) { notif ->
+                            if (!notif.isRead) {
+                                viewModel.markAsRead(notif.id)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+}
+
+fun groupNotificationsByDay(notifications: List<Notification>): Map<String, List<Notification>> {
+    val now = System.currentTimeMillis()
+    val oneDayMillis = 24 * 60 * 60 * 1000
+
+    val recent = mutableListOf<Notification>()
+    val older = mutableListOf<Notification>()
+
+    for (notification in notifications) {
+        if (now - notification.timestamp < oneDayMillis) {
+            recent.add(notification)
+        } else {
+            older.add(notification)
+        }
+    }
+
+    val grouped = mutableMapOf<String, List<Notification>>()
+    if (recent.isNotEmpty()) grouped["Recientes"] = recent
+    if (older.isNotEmpty()) grouped["Antiguas"] = older
+
+    return grouped
 }

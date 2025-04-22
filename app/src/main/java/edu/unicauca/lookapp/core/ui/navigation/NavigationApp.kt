@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import edu.unicauca.lookapp.core.ui.components.BottomNavBar
 import edu.unicauca.lookapp.core.ui.components.ModalDrawerContent
 import edu.unicauca.lookapp.core.ui.components.TopAppBar
+import edu.unicauca.lookapp.core.ui.screen.credits.CreditsScreen
 import edu.unicauca.lookapp.core.utils.SessionManager
 import edu.unicauca.lookapp.features.home.ui.screen.Home
 import edu.unicauca.lookapp.features.notifications.ui.screen.NotificationScreen
@@ -46,7 +47,18 @@ fun NavigationApp(modifier: Modifier = Modifier) {
     }*/
 
     ModalNavigationDrawer(
-        drawerContent = { ModalDrawerContent() },
+        drawerContent = {
+            ModalDrawerContent(
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        popUpTo(0)
+                        launchSingleTop = true
+                    }
+                },
+                drawerState = drawerState,
+                scope = scope
+            )
+        },
         drawerState = drawerState,
         gesturesEnabled = currentRoute != RouteEnum.Search.route,
     ) {
@@ -97,6 +109,10 @@ fun NavigationApp(modifier: Modifier = Modifier) {
 
                 composable(route = RouteEnum.Search.route) {
                     SearchScreen()
+                }
+
+                composable(route = RouteEnum.Credits.route){
+                    CreditsScreen()
                 }
 
             }

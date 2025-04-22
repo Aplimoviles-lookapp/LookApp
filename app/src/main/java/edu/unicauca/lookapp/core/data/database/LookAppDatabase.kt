@@ -9,6 +9,8 @@ import edu.unicauca.lookapp.features.home.data.entities.ServiceEntity
 import edu.unicauca.lookapp.features.home.data.entities.ShiftEntity
 import edu.unicauca.lookapp.features.home.data.entities.SiteEntity
 import edu.unicauca.lookapp.features.home.data.entities.SiteServiceCrossRef
+import edu.unicauca.lookapp.features.notifications.data.dao.NotificationDao
+import edu.unicauca.lookapp.features.notifications.data.entities.NotificationEntity
 
 
 import edu.unicauca.lookapp.features.saved.data.dao.SavedDao
@@ -25,10 +27,10 @@ import edu.unicauca.lookapp.features.userprofile.data.entities.UserAccountEntity
         ShiftEntity::class,
         SiteEntity::class,
         ServiceEntity::class,
-        SiteServiceCrossRef::class
-
+        SiteServiceCrossRef::class,
+        NotificationEntity::class
     ],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class LookAppDatabase:RoomDatabase() {
@@ -37,5 +39,5 @@ abstract class LookAppDatabase:RoomDatabase() {
     abstract fun shiftDao(): ShiftDao
     abstract fun siteDao():SiteDao
     abstract fun serviceDao():ServiceDao
-
+    abstract fun notificationDao(): NotificationDao
 }

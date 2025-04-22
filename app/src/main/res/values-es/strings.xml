@@ -24,6 +24,8 @@
     <string name="lateral_txt_profile">Perfil</string>
     <string name="lateral_txt_settings">Configuraciones</string>
     <string name="lateral_txt_help_and_feedback">Ayuda y comentarios</string>
+    <string name="lateral_txt_credits">Créditos</string>
     <string name="title_Search">Buscar</string>
     <string name="title_notifications">Notificaciones</string>
+    <string name="title_credits">Créditos</string>
 </resources>

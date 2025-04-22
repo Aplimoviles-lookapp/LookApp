@@ -24,7 +24,7 @@ class StartupInitializer @Inject constructor(
             loadInitialSavedItemsUseCase() // Inserta Items primero
             loadInitialUserAccountsUseCase() // Luego crea usuarios con esos Items
             loadInitialSiteUseCase()// crea sitios
-          //  loadInitialServiceUseCase()
+            //  loadInitialServiceUseCase()
 
         }
 
