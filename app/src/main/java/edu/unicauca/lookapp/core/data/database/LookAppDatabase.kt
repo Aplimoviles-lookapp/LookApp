@@ -28,7 +28,7 @@ import edu.unicauca.lookapp.features.userprofile.data.entities.UserAccountEntity
         SiteServiceCrossRef::class
 
     ],
-    version = 7,
+    version = 9,
     exportSchema = false
 )
 abstract class LookAppDatabase:RoomDatabase() {

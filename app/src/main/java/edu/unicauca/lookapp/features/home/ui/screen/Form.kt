@@ -85,7 +85,7 @@ fun Form(
             onValueChange = { shiftViewModel.updateNombre(it)},
             label = {
                 Text(
-                    text="Nombre y Apellido",
+                    text="Nombre",
                     modifier=Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodySmall

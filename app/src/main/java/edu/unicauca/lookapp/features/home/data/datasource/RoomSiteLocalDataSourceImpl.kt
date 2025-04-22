@@ -2,6 +2,7 @@ package edu.unicauca.lookapp.features.home.data.datasource
 
 import edu.unicauca.lookapp.features.home.data.dao.SiteDao
 import edu.unicauca.lookapp.features.home.data.entities.SiteEntity
+import edu.unicauca.lookapp.features.home.data.entities.SiteServiceCrossRef
 import edu.unicauca.lookapp.features.home.data.entities.SiteWithService
 import kotlinx.coroutines.flow.Flow
 
@@ -20,6 +21,14 @@ class RoomSiteLocalDataSourceImpl (private val siteDao:SiteDao):SiteDataSource{
 
     override suspend fun count(): Int {
         return siteDao.count()
+    }
+
+    override suspend fun findFirst(): SiteEntity? {
+        return siteDao.findFirst()
+    }
+
+    override suspend fun insertCrossRef(ref: List<SiteServiceCrossRef>) {
+        siteDao.insertCrossRef(ref)
     }
 
 }

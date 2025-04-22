@@ -9,6 +9,8 @@ import androidx.room.Transaction
 import edu.unicauca.lookapp.features.home.data.entities.SiteEntity
 import edu.unicauca.lookapp.features.home.data.entities.SiteServiceCrossRef
 import edu.unicauca.lookapp.features.home.data.entities.SiteWithService
+import edu.unicauca.lookapp.features.userprofile.data.crossrefs.UserAccounItemCrossRef
+import edu.unicauca.lookapp.features.userprofile.data.entities.UserAccountEntity
 
 import kotlinx.coroutines.flow.Flow
 
@@ -29,4 +31,11 @@ interface SiteDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSiteServiceCrossRefs(refs: List<SiteServiceCrossRef>)
+
+    @Query("SELECT * FROM sites LIMIT 1")
+    suspend fun findFirst(): SiteEntity?
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCrossRef(ref:List<SiteServiceCrossRef>)
 }

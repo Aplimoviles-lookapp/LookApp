@@ -7,9 +7,11 @@ import javax.inject.Inject
 
 class ServiceRepository @Inject constructor(private val serviceDataSource: ServiceDataSource){
 
-    /*
+
     suspend fun loadInitialData(){
         if(serviceDataSource.count() > 0) return
         serviceDataSource.insertAll(InitialServiceDataProvider.services)
-    }*/
+    }
+
+    suspend fun getAll()= serviceDataSource.getAll()
 }
