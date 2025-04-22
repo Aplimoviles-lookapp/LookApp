@@ -40,4 +40,6 @@ object DatabaseModule {
     fun provideSiteDao(database: LookAppDatabase)=database.siteDao()
     @Provides
     fun provideServiceDao(database: LookAppDatabase)=database.serviceDao()
+    @Provides
+    fun provideNotificationDao(database: LookAppDatabase) = database.notificationDao()
 }
