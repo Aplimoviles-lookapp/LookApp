@@ -14,6 +14,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,10 +27,12 @@ import edu.unicauca.lookapp.features.search.ui.viewmodel.SearchViewModel
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val location by viewModel.location.collectAsState()
+    val permissionGranted = remember { mutableStateOf(false) }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
+        permissionGranted.value = isGranted
         if (isGranted) {
             viewModel.fetchLocation()
         }
@@ -39,6 +43,7 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
             context, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
+        permissionGranted.value = hasPermission
         if (hasPermission) {
             viewModel.fetchLocation()
         } else {
@@ -47,7 +52,10 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        MapView(location = location)
+        MapView(
+            location = location,
+            permissionGranted = permissionGranted.value
+        )
         SearchBar(
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -58,4 +66,5 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
         )
     }
 }
+
 

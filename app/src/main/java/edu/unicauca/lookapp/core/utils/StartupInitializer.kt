@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 class StartupInitializer @Inject constructor(
     private val loadInitialSavedItemsUseCase: LoadInitialSavedItemsUseCase,
-    private val loadInitialUserAccountsUseCase: LoadInitialUserAccountsUseCase
+    private val loadInitialUserAccountsUseCase: LoadInitialUserAccountsUseCase,
 ) {
     fun initialize() {
 
